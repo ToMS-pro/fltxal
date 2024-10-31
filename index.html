@@ -18,8 +18,6 @@
 
         function calculatePokok() {
             let berat = parseFloat(document.getElementById('berat').value) || 0;
-            let tarif10kg = parseFloat(document.getElementById('tarif10kg').value) || 0;
-            let tarifPerKilo = parseFloat(document.getElementById('tarifPerKilo').value) || 0;
             let tarifFlat = document.getElementById('cekTarifFlat').checked;
 
             let biayaPokok;
@@ -27,6 +25,8 @@
                 let hargaTarifFlat = parseFloat(document.getElementById('hargaTarifFlat').value) || 0;
                 biayaPokok = berat * hargaTarifFlat; // Gunakan tarif flat
             } else {
+                let tarif10kg = parseFloat(document.getElementById('tarif10kg').value) || 0;
+                let tarifPerKilo = parseFloat(document.getElementById('tarifPerKilo').value) || 0;
                 biayaPokok = berat <= 10 ? tarif10kg : tarif10kg + (berat - 10) * tarifPerKilo; // Gunakan tarif 10kg dan tarif per kilo
             }
 
@@ -71,7 +71,9 @@
         }
 
         function toggleTarifFlat() {
-            document.getElementById('tarifFlatSection').style.display = document.getElementById('cekTarifFlat').checked ? 'block' : 'none';
+            let tarifFlatChecked = document.getElementById('cekTarifFlat').checked;
+            document.getElementById('tarifFlatSection').style.display = tarifFlatChecked ? 'block' : 'none';
+            document.getElementById('tarif10kgSection').style.display = tarifFlatChecked ? 'none' : 'block';
             calculateTotal(); // Recalculate total when toggling
         }
     </script>
@@ -84,12 +86,6 @@
         <label>Berat Barang (kg):</label>
         <input type="number" id="berat" required oninput="calculateTotal()">
 
-        <label>Tarif 10 kg Pertama (Rp):</label>
-        <input type="number" id="tarif10kg" required oninput="calculateTotal()">
-
-        <label>Tarif Per Kilogram Selanjutnya (Rp):</label>
-        <input type="number" id="tarifPerKilo" required oninput="calculateTotal()">
-
         <label>
             <input type="checkbox" id="cekTarifFlat" onclick="toggleTarifFlat(); calculateTotal()"> Gunakan Tarif Flat
         </label>
@@ -97,6 +93,14 @@
         <div id="tarifFlatSection" style="display:none;">
             <label>Harga Tarif Flat (Rp):</label>
             <input type="number" id="hargaTarifFlat" oninput="calculateTotal()">
+        </div>
+
+        <div id="tarif10kgSection">
+            <label>Tarif 10 kg Pertama (Rp):</label>
+            <input type="number" id="tarif10kg" oninput="calculateTotal()">
+
+            <label>Tarif Per Kilogram Selanjutnya (Rp):</label>
+            <input type="number" id="tarifPerKilo" oninput="calculateTotal()">
         </div>
 
         <label>Hasil Perhitungan Pokok (Rp):</label>

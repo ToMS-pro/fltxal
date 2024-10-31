@@ -10,8 +10,6 @@
         h1 { text-align: center; }
         label { display: block; margin-top: 10px; }
         input[type="number"], input[type="text"] { width: calc(100% - 22px); padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 100%; padding: 10px; margin-top: 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #218838; }
     </style>
     <script>
         function formatCurrency(value) {
@@ -32,10 +30,8 @@
         function calculateTotal() {
             let biayaPokok = calculatePokok();
 
-            // Ambil nilai biaya penerus
             let biayaPenerus = parseFloat(document.getElementById('biayaPenerus').value) || 0;
 
-            // Hitung biaya asuransi jika dipilih
             let biayaAsuransi = 0;
             if (document.getElementById('cekAsuransi').checked) {
                 let hargaBarang = parseFloat(document.getElementById('hargaBarang').value) || 0;
@@ -43,15 +39,12 @@
                 document.getElementById('hasilAsuransi').value = formatCurrency(biayaAsuransi);
             }
 
-            // Hitung DPP dari hasil perhitungan pokok + biaya penerus + biaya asuransi
             let DPP = biayaPokok + biayaPenerus + biayaAsuransi;
             document.getElementById('hasilDPP').value = formatCurrency(DPP);
 
-            // Hitung PPN
             let PPN = DPP * 0.011;
             document.getElementById('hasilPPN').value = formatCurrency(PPN);
 
-            // Hitung PPh23 jika dicentang
             let PPh23 = 0;
             if (document.getElementById('cekPPh23').checked) {
                 PPh23 = DPP * 0.02;
@@ -60,7 +53,6 @@
                 document.getElementById('hasilPPh23').value = formatCurrency(0);
             }
 
-            // Total tagihan dihitung dari biaya ambil, biaya paking, DPP, PPN, dan dikurangi PPh23 jika ada
             let biayaAmbil = parseFloat(document.getElementById('biayaAmbil').value) || 0;
             let biayaPaking = parseFloat(document.getElementById('biayaPaking').value) || 0;
             let totalTagihan = biayaAmbil + biayaPaking + DPP + PPN - PPh23;
@@ -75,7 +67,8 @@
 <body>
 
     <div class="form-container">
-        <h1>Perhitungan Pokok</h1>
+        <h1>Kalkulasi Biaya Lengkap</h1>
+
         <label>Berat Barang (kg):</label>
         <input type="number" id="berat" required oninput="calculateTotal()">
 
@@ -88,11 +81,7 @@
         <label>Hasil Perhitungan Pokok (Rp):</label>
         <input type="text" id="hasilPokok" readonly><br>
 
-        <button type="button" onclick="calculatePokok()">Hitung Pokok</button>
-    </div>
-
-    <div class="form-container">
-        <h1>Biaya Tambahan</h1>
+        <h2>Biaya Tambahan</h2>
         <label>Biaya Penerus (Rp):</label>
         <input type="number" id="biayaPenerus" oninput="calculateTotal()">
 
@@ -101,12 +90,9 @@
 
         <label>Biaya Paking (Rp):</label>
         <input type="number" id="biayaPaking" oninput="calculateTotal()">
-    </div>
 
-    <div class="form-container">
-        <h1>Asuransi</h1>
+        <h2>Asuransi</h2>
         <label><input type="checkbox" id="cekAsuransi" onclick="toggleAsuransi(); calculateTotal()"> Gunakan Asuransi</label>
-
         <div id="asuransiSection" style="display:none;">
             <label>Harga Barang (Rp):</label>
             <input type="number" id="hargaBarang" oninput="calculateTotal()">
@@ -114,10 +100,8 @@
             <label>Biaya Asuransi (Rp):</label>
             <input type="text" id="hasilAsuransi" readonly>
         </div>
-    </div>
 
-    <div class="form-container">
-        <h1>Total Biaya</h1>
+        <h2>Total Biaya</h2>
         <label>DPP (Dari Biaya Pokok + Biaya Penerus + Biaya Asuransi) (Rp):</label>
         <input type="text" id="hasilDPP" readonly>
 
@@ -129,8 +113,6 @@
 
         <label>Hasil Total Tagihan (Rp):</label>
         <input type="text" id="hasilTotal" readonly><br>
-
-        <button onclick="calculateTotal()">Hitung Total</button>
     </div>
 
 </body>
